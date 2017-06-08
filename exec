@@ -1,5 +1,9 @@
 #!/bin/sh
 stty sane # workaround moby/moby#33502
+if [ $# -eq 0 ]; then
+  echo >&2 error: no command specified
+  exit 1
+fi
 MY_DIR=$(dirname "$0")
 "$MY_DIR/sync" &
 exec "$@"
