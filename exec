@@ -1,4 +1,5 @@
 #!/bin/sh
+stty sane # workaround moby/moby#33502
 MY_DIR=$(dirname "$0")
 "$MY_DIR/sync" &
 exec "$@"
