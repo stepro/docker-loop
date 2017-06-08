@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# Determine source directory
+SOURCE="${DOCKER_SYNC_SOURCE:-/.src}"
+if [ ! -e "$SOURCE" ]; then
+  # No source to sync from; exit
+  exit 1
+fi
+
+# Change to source directory
+cd "$SOURCE"
+
+# Determine target directory
+TARGET="${DOCKER_SYNC_TARGET:-$(pwd)}"
+if [ ! -e "$TARGET" ]; then
+  # No target to sync to; exit
+  exit 1
+fi
+
+# Determine log file
+LOG="${DOCKER_SYNC_LOG:-/.synclog}"
+
+# Run dcwatch and respond to changes
+MY_DIR=$(dirname "$0")
+"$MY_DIR/dcwatch" | while read action file; do
+  DELETE=$(echo "$action" | grep -)
+  if [ -n "$DELETE" ]; then
+    # Directory or file was removed
+    echo rm -rf \"$TARGET/$file\" >> "$LOG"
+    rm -rf "$TARGET/$file"
+  elif [ -d "$file" ]; then
+    # Directory was updated or added
+    echo mkdir -p \"$TARGET/$file\" >> "$LOG"
+    mkdir -p "$TARGET/$file"
+  else
+    # File was updated or added
+    DIR=$(dirname "$file")
+    echo mkdir -p \"$TARGET/$DIR\" >> "$LOG"
+    mkdir -p "$TARGET/$DIR"
+    echo cp \"$file\" \"$TARGET/$file\" >> "$LOG"
+    cp "$file" "$TARGET/$file"
+  fi
+done

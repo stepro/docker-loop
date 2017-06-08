@@ -1,0 +1,17 @@
+#!/bin/sh
+
+SOURCE_DIR=$(dirname "$0")
+TARGET_DIR="${1:-/sync}"
+TARGET_DIR_DIR=$(dirname "$TARGET_DIR")
+mkdir -p "$TARGET_DIR_DIR"
+cp -R "$SOURCE_DIR" "$TARGET_DIR"
+
+TOOLS_SOURCE_DIR="$2"
+if [ -e "$TOOLS_SOURCE_DIR" ]; then
+  TOOLS_TARGET_DIR="${3:-/tools}"
+  TOOLS_TARGET_DIR_DIR=$(dirname "$TOOLS_TARGET_DIR")
+  mkdir -p "$TOOLS_TARGET_DIR_DIR"
+  cp -R "$TOOLS_SOURCE_DIR" "$TOOLS_TARGET_DIR"
+fi
+
+exec "$TARGET_DIR/sync"
