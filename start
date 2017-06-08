@@ -14,4 +14,8 @@ if [ -e "$TOOLS_SOURCE_DIR" ]; then
   cp -R "$TOOLS_SOURCE_DIR" "$TOOLS_TARGET_DIR"
 fi
 
-exec "$TARGET_DIR/sync"
+# Trap signals for fast shutdown
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+"$TARGET_DIR/sync" & wait $!
