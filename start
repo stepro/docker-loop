@@ -1,21 +1,21 @@
 #!/bin/sh
 
 MY_DIR=$(dirname "$0")
-LOOP_TARGET_DIR="${DOCKER_LOOP_TARGET_DIR:-/.loop}"
-LOOP_TARGET_DIR_DIR=$(dirname "$LOOP_TARGET_DIR")
-mkdir -p "$LOOP_TARGET_DIR_DIR"
-cp -R "$MY_DIR" "$LOOP_TARGET_DIR"
+TARGET="${DOCKER_WS_TARGET:-/.ws}"
+TARGET_DIR=$(dirname "$TARGET")
+mkdir -p "$TARGET_DIR"
+cp -R "$MY_DIR" "$TARGET"
 
-TOOLS_SOURCE_DIR="$DOCKER_TOOLS_SOURCE_DIR"
-if [ -e "$TOOLS_SOURCE_DIR" ]; then
-  TOOLS_TARGET_DIR="${DOCKER_TOOLS_TARGET_DIR:-/.tools}"
-  TOOLS_TARGET_DIR_DIR=$(dirname "$TOOLS_TARGET_DIR")
-  mkdir -p "$TOOLS_TARGET_DIR_DIR"
-  cp -R "$TOOLS_SOURCE_DIR" "$TOOLS_TARGET_DIR"
+TOOLS_SOURCE="$DOCKER_WS_TOOLS_SOURCE"
+if [ -e "$TOOLS_SOURCE" ]; then
+  TOOLS_TARGET="${DOCKER_WS_TOOLS_TARGET:-/.wstools}"
+  TOOLS_TARGET_DIR=$(dirname "$TOOLS_TARGET")
+  mkdir -p "$TOOLS_TARGET_DIR"
+  cp -R "$TOOLS_SOURCE" "$TOOLS_TARGET"
 fi
 
 # Trap signals for fast shutdown
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-"$LOOP_TARGET_DIR/sync" & wait $!
+"$TARGET_DIR/sync" & wait $!
