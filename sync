@@ -7,9 +7,6 @@ if [ ! -e "$SOURCE" ]; then
   exit 1
 fi
 
-# Change to source directory
-cd "$SOURCE"
-
 # Determine target directory
 TARGET="${DOCKER_WS_SYNC_TARGET:-$(pwd)}"
 if [ ! -e "$TARGET" ]; then
@@ -19,6 +16,9 @@ fi
 
 # Determine log file
 LOG="${DOCKER_WS_SYNC_LOG:-/.wssynclog}"
+
+# Change to source directory
+cd "$SOURCE"
 
 # Run watch and respond to changes
 MY_DIR=$(dirname "$0")
