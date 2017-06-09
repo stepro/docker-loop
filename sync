@@ -20,7 +20,7 @@ fi
 # Determine log file
 LOG="${DOCKER_SYNC_LOG:-/.synclog}"
 
-# Run dcwatch and respond to changes
+# Run watch and respond to changes
 MY_DIR=$(dirname "$0")
 "$MY_DIR/dcwatch" | while read action file; do
   DELETE=$(echo "$action" | grep -)

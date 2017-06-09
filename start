@@ -1,14 +1,14 @@
 #!/bin/sh
 
-SOURCE_DIR=$(dirname "$0")
-TARGET_DIR="${1:-/sync}"
-TARGET_DIR_DIR=$(dirname "$TARGET_DIR")
-mkdir -p "$TARGET_DIR_DIR"
-cp -R "$SOURCE_DIR" "$TARGET_DIR"
+MY_DIR=$(dirname "$0")
+LOOP_TARGET_DIR="${DOCKER_LOOP_TARGET_DIR:-/.loop}"
+LOOP_TARGET_DIR_DIR=$(dirname "$LOOP_TARGET_DIR")
+mkdir -p "$LOOP_TARGET_DIR_DIR"
+cp -R "$MY_DIR" "$LOOP_TARGET_DIR"
 
-TOOLS_SOURCE_DIR="$2"
+TOOLS_SOURCE_DIR="$DOCKER_TOOLS_SOURCE_DIR"
 if [ -e "$TOOLS_SOURCE_DIR" ]; then
-  TOOLS_TARGET_DIR="${3:-/tools}"
+  TOOLS_TARGET_DIR="${DOCKER_TOOLS_TARGET_DIR:-/.tools}"
   TOOLS_TARGET_DIR_DIR=$(dirname "$TOOLS_TARGET_DIR")
   mkdir -p "$TOOLS_TARGET_DIR_DIR"
   cp -R "$TOOLS_SOURCE_DIR" "$TOOLS_TARGET_DIR"
@@ -18,4 +18,4 @@ fi
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-"$TARGET_DIR/sync" & wait $!
+"$LOOP_TARGET_DIR/sync" & wait $!
