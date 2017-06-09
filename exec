@@ -1,5 +1,5 @@
 #!/bin/sh
-stty sane # workaround moby/moby#33502
+stty sane 2>/dev/null # workaround moby/moby#33502
 if [ $# -eq 0 ]; then
   echo >&2 error: no command specified
   exit 1
