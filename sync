@@ -1,21 +1,21 @@
 #!/bin/sh
 
 # Determine source directory
-SOURCE="${DOCKER_WS_SYNC_SOURCE:-/.src}"
+SOURCE="${DOCKER_SYNC_SOURCE:-/.src}"
 if [ ! -e "$SOURCE" ]; then
   # No source to sync from; exit
   exit 1
 fi
 
 # Determine target directory
-TARGET="${DOCKER_WS_SYNC_TARGET:-$(pwd)}"
+TARGET="${DOCKER_SYNC_TARGET:-$(pwd)}"
 if [ ! -e "$TARGET" ]; then
   # No target to sync to; exit
   exit 1
 fi
 
 # Determine log file
-LOG="${DOCKER_WS_SYNC_LOG:-/.wssynclog}"
+LOG="${DOCKER_SYNC_LOG:-/.synclog}"
 
 # Change to source directory
 cd "$SOURCE"
